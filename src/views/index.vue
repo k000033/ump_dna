@@ -1,5 +1,5 @@
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { computed, defineAsyncComponent, onMounted } from "@vue/runtime-core";
 import Header from "../components/Header.vue";
 import DnaAgGrid from "../components/DnaAgGrid.vue";
 import { useStore } from "vuex";
@@ -7,11 +7,18 @@ import { apiUseUmpDnaParams } from "../api/index";
 export default {
   components: {
     Header,
-    DnaAgGrid,
+    DnaAgGrid:defineAsyncComponent(()=>import('../components/DnaAgGrid.vue')),
+    SetDna:defineAsyncComponent(()=>import('../components/SetDna.vue')),
   },
   setup() {
     const store = useStore();
     const UpmDanParams = new apiUseUmpDnaParams();
+    const currMenu = computed(()=>{
+      return store.getters['getCurrMenu'];
+    })
+    /**
+     * 撈DNA清單 AgGrid
+     */
     const fetchDnaAgGridData = () => {
       UpmDanParams.initialParams();
       store.dispatch("fetchDanAgGridData", UpmDanParams);
@@ -20,7 +27,9 @@ export default {
     onMounted(() => {
       fetchDnaAgGridData();
     });
-    return {};
+    return {
+      currMenu
+    };
   },
 };
 </script>
@@ -31,7 +40,8 @@ export default {
       <Header />
     </div>
     <div class="content">
-      <DnaAgGrid />
+      <!-- <DnaAgGrid /> -->
+      <component :is="currMenu" />
     </div>
   </div>
 </template>

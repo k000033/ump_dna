@@ -11,6 +11,9 @@ export class useUmpDnaParams{
       this.OBJECT="";
       this.HINT="";
       this.SQL="";
+      this.QUERY_TYPE="";
+      this.QUERY_DNA_TYPE="";
+      this.FILETER="";
       this.USER_ID=`${username}`;
     }
 
@@ -23,5 +26,8 @@ export class useUmpDnaParams{
         this.OBJECT="";
         this.HINT="";
         this.SQL="";
+        this.QUERY_TYPE="";
+        this.QUERY_DNA_TYPE="";
+        this.FILETER="";
     }
 }

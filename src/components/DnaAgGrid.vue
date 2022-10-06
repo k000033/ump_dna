@@ -65,7 +65,7 @@ export default {
           width: "120px",
         },
         {
-          headerName: "順序",
+          headerName: "描述",
           field: "HINT",
           sortable: true,
           filter: "agTextColumnFilter",

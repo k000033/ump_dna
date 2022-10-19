@@ -3,31 +3,21 @@ let username = new URL(`https://1.com?${getHubUrl.href.split("?")[1]}`).searchPa
 
 export class useUmpDnaParams{
     constructor(){
-      this.PAGE="";
       this.TAG ="";
-      this.NAME ="";
-      this.GENE="";
-      this.IDX="";
       this.OBJECT="";
-      this.HINT="";
-      this.SQL="";
-      this.QUERY_TYPE="";
-      this.QUERY_DNA_TYPE="";
+      this.OBJECT_TYPE="";
+      this.QUERY_MODE="";
       this.FILETER="";
+      this.CHECK_TYPE=""
       this.USER_ID=`${username}`;
     }
 
     initialParams(){
-        this.PAGE="";
-        this.TAG ="";
-        this.NAME ="";
-        this.GENE="";
-        this.IDX="";
-        this.OBJECT="";
-        this.HINT="";
-        this.SQL="";
-        this.QUERY_TYPE="";
-        this.QUERY_DNA_TYPE="";
-        this.FILETER="";
+      this.TAG ="";
+      this.OBJECT="";
+      this.OBJECT_TYPE="";
+      this.QUERY_MODE="";
+      this.FILETER="";
+      this.CHECK_TYPE=""
     }
 }

@@ -37,12 +37,12 @@ export default {
           @click="menu_clcik('DnaAgGrid')"
           >DNA清單</a
         >
-        <a
+        <!-- <a
           :class="{ active: currMenu == 'SetDna' }"
           href="javascript:;"
           @click="menu_clcik('SetDna')"
           >設定</a
-        >
+        > -->
       </nav>
     </div>
   </div>

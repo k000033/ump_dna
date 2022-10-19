@@ -4,11 +4,15 @@ import Header from "../components/Header.vue";
 import DnaAgGrid from "../components/DnaAgGrid.vue";
 import { useStore } from "vuex";
 import { apiUseUmpDnaParams } from "../api/index";
+import ListDialog from '../components/SetDnaDilaog/ListDialog.vue'
+import SetDnaDialog from '../components/SetDnaDilaog/SetDnaDialog.vue'
 export default {
   components: {
     Header,
     DnaAgGrid:defineAsyncComponent(()=>import('../components/DnaAgGrid.vue')),
-    SetDna:defineAsyncComponent(()=>import('../components/SetDna.vue')),
+    ListDialog,
+    SetDnaDialog
+    // SetDna:defineAsyncComponent(()=>import('../components/SetDna.vue')),
   },
   setup() {
     const store = useStore();
@@ -43,6 +47,8 @@ export default {
       <!-- <DnaAgGrid /> -->
       <component :is="currMenu" />
     </div>
+    <ListDialog/>
+    <SetDnaDialog/>
   </div>
 </template>
 

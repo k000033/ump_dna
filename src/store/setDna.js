@@ -3,123 +3,169 @@ import { apiGetNowTime } from "../componentAPI/index";
 export default {
   namespaced: true,
   state: {
-    // 0.商品模式 1.門市模式
-    queryType: "0",
-    // 0.物品門市 1.DNA模式
-    queryDnaType: "0",
-    // SetMenu 左邊AgGrid 讀取狀態
-    leftAgGridLoading: false,
-    // SetMenu 右邊AgGrid 讀取狀態
-    rightAgGridLoading: false,
-    // // 物件角度左邊 讀取狀態
-    // leftObjectAgGridLoading: false,
-    // // 物件角度右邊 讀取狀態
-    // rightObjectAgGridLoading: false,
-    // // DNA角度左邊 讀取狀態
-    // leftDnaAgGridLoading: false,
-    // // DNA角度右邊 讀取狀態
-    // rightDnaAgGridLoading: false,
-    // 物件角度左邊
-    leftObjectAgGridData: [],
-    // 物件角度右邊
-    rightObjectAgGridData: [],
-    // DNA角度左邊
-    leftDanAgGridData: [],
-    // DNA角度右邊
-    rightDnaAgGridData: [],
+    openListDialog: false, // 明細Dialog 開關狀態
+    tag: "", //Dna Tag
+    rowData:[],
+    listAgGridData: [], //明細 AgGrid 資料
+    listAgGridLoading: false, // 明細 AgGrid 載入狀態
+    readOnly: false, // 是否不能按下明細右上設定
+    object_type: 2, // 2.商品 3.組織
+    openSetDnaDialog: false, // 設定Dna Dialog開關狀態
+    menuIndex: "0", // 0. 加入 1. 移除
+    checkDnaAgGridData: [], //設定Dna AgGrid Data
+    page: 0, // 0. 設定Dna  1.設定結果
+    resultAgGridData:[], // 結果 AgGrid 資料
+
+    leftAgGridData: [],
+    rightAgGridData: [],
   },
   actions: {
-    fetchSetDnaAgGridData({ commit, state }, params) {
-      if (params.OBJECT == "") {
-        commit("setLeftAgGridLoading", true);
-      } else {
-        commit("setRightAgGridLoading", true);
+    fetchListAction({ commit }, params) {
+      if (params.QUERY_MODE == 0) {
+        commit("setListAgGridLoading", true);
       }
+
       return apiUseFetchAxios(params).then((res) => {
         console.log("------------------------------------------------");
-        console.log("-- fetchDanAgGridData() start ::: " + apiGetNowTime());
+        console.log("-- setDnaAction() start ::: " + apiGetNowTime());
         console.log("-- Table length ::: " + res.data.data.length);
         console.log("-- data error ::: " + res.data.msg);
-        console.log("-- fetchDanAgGridData() end ::: " + apiGetNowTime());
+        console.log("-- setDnaAction() end ::: " + apiGetNowTime());
         console.log("------------------------------------------------");
-
-        if (params.QUERY_DNA_TYPE == 0) {
-          if (params.OBJECT == "") {
-            commit("setLeftAgGridLoading", false);
-            commit("setLeftObjectAgGridData", res.data);
-          } else {
-            commit("setRightAgGridLoading", false);
-            commit("setRightObjectAgGridData", res.data);
-          }
-        } else {
-          if (params.OBJECT == "") {
-            commit("setLeftAgGridLoading", false);
-            commit("setLeftDnaAgGridData", res.data);
-          } else {
-            commit("setRightAgGridLoading", false);
-            commit("setRightDnaAgGridData", res.data);
-          }
+        if (params.QUERY_MODE == 1) {
+          commit("setListAgGridLoading", false);
+          commit("setListAgGridData", res.data);
+          commit("setCheckDnaAgGridData", res.data);
+        } else if (params.QUERY_MODE == 0) {
+          commit("setCheckDnaAgGridData", res.data);
+          commit("setListAgGridLoading", false);
+          //   commit("setLeftAgGridData", res.data.dataSet.Table);
+          //   commit("setRightAgGridData", res.data.dataSet.Table1);
         }
+
         return res.data;
       });
     },
-    setQueryTypeAction({ commit }, type) {
-      commit("setQueryType", type);
+    setOpenListDialogAction({ commit }, boolean) {
+      commit("setOpenListDialog", boolean);
     },
-    setQueryDnaTypeAction({ commit }, type) {
-      commit("setQueryDnaType", type);
+    setTagAction({ commit }, TagName) {
+      commit("setTag", TagName);
     },
+    setReadOnlyAction({ commit }, boolean) {
+      commit("setReadOnly", boolean);
+    },
+    setObjectTypeAction({ commit }, type) {
+      commit("setObjectType", type);
+    },
+    setOpenSetDnaDlgAction({ commit }, boolean) {
+      commit("setOpenSetDnaDialog", boolean);
+    },
+    setMenuIndexAction({ commit }, index) {
+      commit("setMenuIndex", index);
+    },
+    setPageAction({ commit }, num) {
+      commit("setPage", num);
+    },
+    setResultAgGridDataAction({commit},data){
+      commit('setResultAgGridData',data);
+    },
+    setRowDataAction({commit},data){
+        commit('setRowData',data);
+    }
+    
   },
   mutations: {
-    setQueryType(state, type) {
-      state.queryType = type;
+    setOpenListDialog(state, boolean) {
+      state.openListDialog = boolean;
     },
-    setQueryDnaType(state, type) {
-      state.queryDnaType = type;
+    setListAgGridData(state, data) {
+      state.listAgGridData = data;
     },
-    setLeftObjectAgGridData(state, data) {
-      state.leftObjectAgGridData = data;
+    setListAgGridLoading(state, boolean) {
+      state.listAgGridLoading = boolean;
     },
-    setRightObjectAgGridData(state, data) {
-      state.rightObjectAgGridData = data;
+    setTag(state, TagName) {
+      state.tag = TagName;
     },
-    setLeftDnaAgGridData(state, data) {
-      state.leftDanAgGridData = data;
+    setReadOnly(state, boolean) {
+      state.readOnly = boolean;
     },
-    setRightDnaAgGridData(state, data) {
-      state.rightDnaAgGridData = data;
+    setObjectType(state, type) {
+      state.object_type = type;
     },
-    setLeftAgGridLoading(state, boolean) {
-      state.leftAgGridLoading = boolean;
+    setOpenSetDnaDialog(state, bollean) {
+      state.openSetDnaDialog = bollean;
     },
-    setRightAgGridLoading(state, boolean) {
-      state.rightAgGridLoading = boolean;
+    // setLeftAgGridData(state, data) {
+    //   state.leftAgGridData = data;
+    // },
+    // setRightAgGridData(state, data) {
+    //   state.rightAgGridData = data;
+    // },
+    setMenuIndex(state, index) {
+      state.menuIndex = index;
     },
+    setCheckDnaAgGridData(state, data) {
+        state.checkDnaAgGridData=data
+    },
+    setPage(state, num) {
+      state.page = num;
+    },
+    setResultAgGridData(state,data){
+        state.resultAgGridData =[];
+        state.resultAgGridData = data;
+        console.log( state.resultAgGridData)
+    },
+    setRowData(state,data){
+        state.rowData = data;
+    }
   },
   getters: {
-    getQueryType(state) {
-      return state.queryType;
+    getOpenDilaogStatus(state) {
+      return state.openListDialog;
     },
-    getQueryDnaType(state) {
-      return state.queryDnaType;
+    getSetLisAgGridtData(state) {
+      return state.listAgGridData;
     },
-    getLeftObjectAgGridData(state) {
-      return state.leftObjectAgGridData;
+    getListAgGridLoading(state) {
+      return state.listAgGridLoading;
     },
-    getRightObjectAgGridData(state) {
-      return state.rightObjectAgGridData;
+    getTag(state) {
+      return state.tag;
     },
-    getLeftDnaAgGridData(state) {
-      return state.leftDanAgGridData;
+    getReadOnly(state) {
+      return state.readOnly;
     },
-    getRightDnaAgGridData(state) {
-      return state.rightDnaAgGridData;
+    getObjectType(state) {
+      return state.object_type;
     },
-    getLeftAgGridLoading(state) {
-      return state.leftAgGridLoading;
+    getOpenSetDnaDialog(state) {
+      return state.openSetDnaDialog;
     },
-    getRightAgGridLoading(state) {
-      return state.rightAgGridLoading;
+    // getLeftAgGridData(state) {
+    //   return state.leftAgGridData;
+    // },
+    // getRightAgGridData(state) {
+    //   return state.rightAgGridData;
+    // },
+    getCheckDnaAgGridData(state) {
+      return state.checkDnaAgGridData;
     },
+    getMenuIndex(state) {
+      return state.menuIndex;
+    },
+    getDnaAgGridData(state) {
+      return state.set;
+    },
+    getPage(state) {
+      return state.page;
+    },
+    getResultAgGridData(state){
+        return state.resultAgGridData;
+    },
+    getRowData(state){
+        return state.rowData
+    }
   },
 };

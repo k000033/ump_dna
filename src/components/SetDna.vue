@@ -106,6 +106,7 @@ export default {
         class="el-menu-vertical-demo"
         @select="manu_select"
         :default-openeds="openSubMenuAry"
+        
       >
         <el-sub-menu index="0">
           <template #title>
